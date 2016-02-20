@@ -1,0 +1,134 @@
+<html>
+  <head>
+    <title>Sample App</title>
+    <style>
+    	body {
+    		height: 100%;
+        margin: 0;
+    	}
+      #root {
+        width: 100vmin;
+        height: 100vmin;
+        margin: auto;
+        perspective: 800px;
+        perspective: 100vmin;
+      }
+      .info {
+        position: fixed;
+      }
+    	.map {
+        position: relative;
+    		transform: rotateX(45deg);
+  		  margin: auto;
+  		  width: 100vmin;
+  		  height: 100vmin;
+    	}
+
+      /* 😃 Some cool styles: */
+
+      /*
+      .cell, .cell:before, .cell:after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        height: 7vmin;
+        width: 10vmin;
+        border-radius: 20%/34%;
+        border: 2px solid transparent;
+        border-color: green;
+        box-sizing: border-box;
+        outline: 1px solid green;
+      }
+      */
+
+      /*
+      .cell, .cell:before, .cell:after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        background-color: greenyellow;
+        height: 6.7995vmin;
+        width: 10vmin;
+        border-radius: 50%/33%;
+        left: -.5vmin;
+        border: .5vmin solid green;
+        border-width: 0 0.5vmin;
+        background-clip: content-box;
+      }
+      */
+
+    	.cell,
+    	.cell:before,
+    	.cell:after {
+    		content: "";
+    		display: block;
+    		position: absolute;
+    		top: 0;
+    		background-color: greenyellow;
+    		height: 6.7995vmin; //26px;
+    		width: 10vmin; //44px;
+        border-radius: 15%/25%;
+        left: -2px;
+        top: -2px;
+        border: 2px solid transparent;
+        border-color: transparent green;
+        background-clip: content-box;
+    	}
+    	.cell {
+    		margin: 2 vmin; //0 7px;
+    		cursor: pointer;
+    	}
+    	.cell:before {
+    		transform: rotate(60deg);
+    	}
+    	.cell:after {
+    		transform: rotate(-60deg);
+    	}
+    	.hl {
+    		-webkit-filter: brightness(1.5);
+    	}
+
+    	.cell:hover, .cell:hover:before, .cell:hover:after {
+    		background-color: rebeccapurple;
+    	}
+
+      .cell.selected, .cell.selected:before, .cell.selected:after {
+        border-color: transparent yellow;
+      }
+
+    	.cell .role {
+        position: absolute;
+        height: 1.5em;
+        width: 100%;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        text-align: center;
+        font-size: 12px;
+        z-index: 10;
+    	}
+
+      .unit {
+        color: lightgray;
+        list-style: none;
+        cursor: pointer;
+        pointer-events: none;
+      }
+      .unit.selected {
+        font-weight: bold;
+      }
+      .unit.available {
+        color: black;
+        pointer-events: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id='root'>
+    </div>
+    <script src="/static/bundle.js"></script>
+  </body>
+</html>
