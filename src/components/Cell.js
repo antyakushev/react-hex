@@ -18,6 +18,7 @@ export default class Cell extends Component {
 const mapStateToProps = (undefined, {cid, x, y, player, role, selected, highlighted, onCellClick}) => (
   {
     onClick: onCellClick.bind(this, cid, role),
+    player,
     role: ROLE_NAMES[role],
     style: {
       left: `${x}vmin`,

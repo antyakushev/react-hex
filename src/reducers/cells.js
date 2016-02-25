@@ -97,7 +97,8 @@ const cell = (state, action) => {
       }
       return {
         ...state,
-        role: action.role
+        role: action.role,
+        player: action.player
       }
     case 'SELECT_UNIT':
       return {

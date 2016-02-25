@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 import player from './player'
-import playerUnits from './playerUnits'
+import players from './players'
 import cells from './cells'
 
-const game = combineReducers({player, playerUnits, cells})
+const game = combineReducers({player, players, cells})
 
 export default game

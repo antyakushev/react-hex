@@ -1,4 +1,4 @@
-//Redundant. Will be replaced by players reducer
+//Redundant. No longer used anywhere.
 import { ROLES } from '../Consts'
 
 // TODO: reducer for storing the selected unit state, and counting the availability of units

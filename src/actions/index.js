@@ -1,5 +1,6 @@
 // QUESTION: is it a good practice to access the store directly from the action creators?
 import store from '../store'
+import { currentPlayerSelector } from '../selectors'
 
 export const begin = (numberOfPlayers=2) => (
   {
@@ -16,6 +17,7 @@ export const selectNewUnit = (role) => {
 }
 
 export const clickCell = (cid, role) => {
+  const state = store.getState()
   if (typeof role === 'number') {
     return {
       type: 'SELECT_UNIT',
@@ -26,26 +28,11 @@ export const clickCell = (cid, role) => {
     return {
       type: 'PLACE_NEW_UNIT',
       cid,
-      role: store.getState().playerUnits.selected
+      player: state.player,
+      role: currentPlayerSelector(state).selected
     }
   }
   // TODO: MOVE_UNIT and PROSELYTIZE
-}
-
-
-export const placeNewUnit = (cid) => {
-  return {
-    type: 'PLACE_NEW_UNIT',
-    cid,
-  }
-}
-
-export const selectUnit = (cid, role) => {
-  return {
-    type: 'SELECT_UNIT',
-    role,
-    cid,
-  }
 }
 
 // Beware! Someone may be killed!

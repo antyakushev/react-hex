@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { selectNewUnit } from '../actions'
+import { playerUnitsSelector } from '../selectors'
 import UnitSwitcher from './UnitSwitcher'
-import { ROLE_PRICES, ROLE_NAMES } from '../Consts'
 
 /*
 class List extends Component {
@@ -36,23 +36,6 @@ class Units extends Component {
   }
 }
 
-const priceMapper = (count, i) => (count * ROLE_PRICES[i])
-const priceReducer = (a, b) => (a + b)
-
-const mapStateToProps = ({playerUnits}) => {
-  const economics = playerUnits.unitsCount.map(priceMapper).reduce(priceReducer)
-  return {
-    units: playerUnits.unitsCount.map( (count, i) => ({
-        count,
-        roleId: i,
-        role: ROLE_NAMES[i],
-        selected: playerUnits.selected == i,
-        available: ROLE_PRICES[i] <= -economics
-      })
-    )
-  }
-}
-
 const mapDispatchToProps = (dispatch) => (
   {
     onUnitClick: (role) => {
@@ -61,4 +44,4 @@ const mapDispatchToProps = (dispatch) => (
   }
 )
 
-export default connect(mapStateToProps, mapDispatchToProps)(Units)
+export default connect(playerUnitsSelector, mapDispatchToProps)(Units)

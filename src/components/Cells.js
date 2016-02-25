@@ -26,8 +26,8 @@ const mapStateToProps = ({cells}) => (
 
 const mapDispatchToProps = (dispatch) => (
   {
-    onCellClick: (cell, role) => {
-      dispatch(clickCell(cell, role))
+    onCellClick: (cell, role, player) => {
+      dispatch(clickCell(cell, role, player))
     }
   }
 )
