@@ -2,8 +2,18 @@ import { createSelector } from 'reselect'
 import { ROLE_PRICES, ROLE_NAMES } from '../Consts'
 
 const cellsSelector = ({ cells }) => cells
-const playerSelector = ({ player }) => player
 const playersSelector = ({ players }) => players
+const turnSelector = ({ turn }) => turn
+
+export const playerSelector = createSelector(
+  turnSelector,
+  ({ player }) => player
+)
+
+export const stepSelector = createSelector(
+  turnSelector,
+  ({ step }) => step
+)
 
 export const currentPlayerSelector = createSelector(
   playerSelector,
@@ -14,15 +24,15 @@ export const currentPlayerSelector = createSelector(
 export const playerCellsSelector = createSelector(
   cellsSelector,
   playerSelector,
-  ( cells, player ) => (
-    cells.filter( cell => cell.player === player)
+  (cells, player) => (
+    cells.filter(cell => cell.player === player)
   ),
 )
 
 export const playerUnitCountsSelector = createSelector(
   // TODO: count for all players at once
   playerCellsSelector,
-  ( cells ) => cells.reduce(
+  (cells) => cells.reduce(
     (prev, next) => {
       if (typeof next.role === 'number') {
         if (prev[next.role]) {
@@ -32,7 +42,7 @@ export const playerUnitCountsSelector = createSelector(
         }
       }
       return prev
-    }, [0,0,0] // TODO: get rid of these zeros
+    }, [0, 0, 0] // TODO: get rid of these zeros
   )
 )
 
@@ -51,11 +61,11 @@ export const playerUnitsSelector = createSelector(
   currentPlayerSelector,
   (counts, economics, player) => (
     {
-      units: counts.map( (count, i) => ({
+      units: counts.map((count, i) => ({
         count,
         roleId: i,
         role: ROLE_NAMES[i],
-        selected: player.selected == i,
+        selected: player.selected === i,
         available: -ROLE_PRICES[i] >= economics
         // QUESTION: how to change player.selected
         // in case of unavailability?

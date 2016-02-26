@@ -5,11 +5,12 @@ import Units from './Units'
 
 const Game = class Game extends Component {
   render() {
-    const {units, cells, player} = this.props
+    const {turn} = this.props
     return (
       <div>
         <div className='info'>
-          <div>{`Player ${player}`}</div>
+          <div>{`Player ${turn.player}`}</div>
+          <div>{turn.step && `Step ${turn.step}`}</div>
           <Units/>
         </div>
         <Cells/>

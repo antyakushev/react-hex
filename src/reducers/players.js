@@ -18,7 +18,7 @@ const player = ({selected}, action) => {
       }
     case 'PLACE_NEW_UNIT':
       let role = action.role
-      while (ROLE_PRICES[role] * 2 > -action.economics && role !== 0) {
+      while (ROLE_PRICES[role] * 2 > -action.economics && role !== 0) { // WE SEE THE FUTURE
         role--
       }
       return {
