@@ -56,7 +56,7 @@ export const playerUnitsSelector = createSelector(
         roleId: i,
         role: ROLE_NAMES[i],
         selected: player.selected == i,
-        available: ROLE_PRICES[i] <= -economics
+        available: -ROLE_PRICES[i] >= economics
         // QUESTION: how to change player.selected
         // in case of unavailability?
         // Maybe move it back here and write one more selector.

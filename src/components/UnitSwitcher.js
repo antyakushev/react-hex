@@ -13,10 +13,10 @@ class Switcher extends Component {
   }
 }
 
-const mapStateToProps = (undefined, {roleId, role, selected, available, onUnitClick}) => (
+const mapStateToProps = (undefined, {roleId, role, count, selected, available, onUnitClick}) => (
   {
     onClick: onUnitClick.bind(this, roleId),
-    text: role,
+    text: `${role} ${count}`,
     className: joinClasses(
       'unit'
       ,selected && 'selected'
