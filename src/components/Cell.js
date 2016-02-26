@@ -5,17 +5,19 @@ import { PLAYER_COLORS, ROLE_NAMES } from '../Consts'
 
 export default class Cell extends Component {
   render() {
-    const {onClick, className, style, role} = this.props
+    const { onClick, className, style, role } = this.props
     return (
       <div onClick={onClick} className={className} style={style}>
-        <span className='role'>{role}</span>
+        <span className="role">{role}</span>
       </div>
-    );
+    )
   }
 }
 
 // NOTE: maybe highlighted is not a part of the state?
-const mapStateToProps = (undefined, {cid, x, y, player, role, selected, highlighted, onCellClick}) => (
+const mapStateToProps = (state, {
+  cid, x, y, player, role, selected, highlighted, onCellClick
+}) => (
   {
     onClick: onCellClick.bind(this, cid, role),
     player,
@@ -25,10 +27,10 @@ const mapStateToProps = (undefined, {cid, x, y, player, role, selected, highligh
       top: `${y}vmin`
     },
     className: joinClasses(
-      'cell'
-      ,selected && 'selected'
-      ,highlighted && 'hl'
-      ,PLAYER_COLORS[player]
+      'cell',
+      selected && 'selected',
+      highlighted && 'hl',
+      PLAYER_COLORS[player]
     )
   }
 )
