@@ -1,7 +1,7 @@
 const n = 5
 const r = 30
 const r0 = r * Math.cos(Math.PI/6)
-const directions = (() => Array.apply(null, Array(6)).map(
+const directions = (() => Array.apply(null, Array(2)).map(
   (_, i) => (2 * Math.PI * i) / 6)
 )()
 
@@ -34,6 +34,7 @@ const Cell = (i, j) => {
         y: this.y,
         role: this.role,
         player: this.player,
+        sides: this.sides,
       }
     }
   }
@@ -105,6 +106,19 @@ const cell = (state, action) => {
         ...state,
         selected: state.cid == action.cid
       }
+    case 'MOVE_UNIT':
+      if (state.selected) return {
+        ...state,
+        role: null,
+        player: null,
+        selected: false
+      }
+      if (state.cid === action.cid) return {
+        ...state,
+        role: action.role,
+        player: action.player
+      }
+      return state
     default:
       return state
   }
@@ -119,6 +133,7 @@ const cells = (state, action) => {
       return state
     case 'SELECT_UNIT':
     case 'PLACE_NEW_UNIT':
+    case 'MOVE_UNIT':
       return state.map(c =>
         cell(c, action)
       )

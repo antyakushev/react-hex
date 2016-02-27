@@ -1,7 +1,7 @@
 // TODO: implement for more players
 export const nextPlayer =
-  (player) => player ? 1 : 0
-  
+  (player) => player ? 0 : 1
+
 export const joinClasses = function() {
   return Array.apply(null, arguments).filter((c) => c).join(' ')
 }

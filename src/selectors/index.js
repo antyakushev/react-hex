@@ -29,6 +29,11 @@ export const playerCellsSelector = createSelector(
   ),
 )
 
+export const selectedCellSelector = createSelector(
+  playerCellsSelector,
+  (cells) => cells.filter(cell => cell.selected)[0]
+)
+
 export const playerUnitCountsSelector = createSelector(
   // TODO: count for all players at once
   playerCellsSelector,

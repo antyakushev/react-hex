@@ -1,6 +1,6 @@
 // QUESTION: is it a good practice to access the store directly from the action creators?
 import store from '../store'
-import { stepSelector, playerSelector, currentPlayerSelector, playerEconomics } from '../selectors'
+import { selectedCellSelector, stepSelector, playerSelector, currentPlayerSelector, playerEconomics } from '../selectors'
 
 export const begin = (numberOfPlayers=2) => (
   {
@@ -17,41 +17,37 @@ export const selectNewUnit = (role) => {
   }
 }
 
-export const clickCell = (cid, role) => {
+export const clickCell = ({cid, role, player}) => {
   const state = store.getState()
-  if (stepSelector(state) === 0) {
-    if (typeof role === 'number') {
-      return {
-        type: 'SELECT_UNIT',
-        role,
-        cid,
-        player: playerSelector(state),
-      }
-    } else {
-      return {
-        type: 'PLACE_NEW_UNIT',
-        cid,
-        player: playerSelector(state),
-        role: currentPlayerSelector(state).selected,
-        economics: playerEconomics(state)
-      }
+  const currentPlayer = playerSelector(state)
+  const step = stepSelector(state)
+  if (step < 2 && typeof role === 'number' && player === currentPlayer) {
+    return {
+      type: 'SELECT_UNIT',
+      role,
+      cid,
+      player: currentPlayer,
     }
-  } else {
+  }
+  if (step === 0) {
+    return {
+      type: 'PLACE_NEW_UNIT',
+      cid,
+      player: currentPlayer,
+      role: currentPlayerSelector(state).selected,
+      economics: playerEconomics(state)
+    }
+  }
+  if (step > 0) {
+    const fromCell = selectedCellSelector(state)
     return {
       type: 'MOVE_UNIT',
       cid,
-      player: playerSelector(state),
+      role: fromCell.role,
+      player: currentPlayer,
     }
   }
   // TODO: MOVE_UNIT and PROSELYTIZE
-}
-
-// Beware! Someone may be killed!
-export const moveUnit = (toCid) => {
-  return {
-    type: 'MOVE_UNIT',
-    toCid,
-  }
 }
 
 // It's what the bishop does

@@ -19,18 +19,18 @@ const mapStateToProps = (state, {
   cid, x, y, player, role, selected, highlighted, onCellClick
 }) => (
   {
-    onClick: onCellClick.bind(this, cid, role),
+    onClick: onCellClick.bind(this, {cid, role, player}),
     player,
     role: ROLE_NAMES[role],
     style: {
       left: `${x}vmin`,
-      top: `${y}vmin`
+      top: `${y}vmin`,
+      color: PLAYER_COLORS[player]
     },
     className: joinClasses(
       'cell',
       selected && 'selected',
       highlighted && 'hl',
-      PLAYER_COLORS[player]
     )
   }
 )
