@@ -29,7 +29,8 @@ export const clickCell = ({cid, role, player}) => {
       player: currentPlayer,
     }
   }
-  if (step === 0) {
+  const selectedCell = selectedCellSelector(state)
+  if (!selectedCell && typeof role !== 'number') {
     return {
       type: 'PLACE_NEW_UNIT',
       cid,
@@ -39,11 +40,10 @@ export const clickCell = ({cid, role, player}) => {
     }
   }
   if (step > 0) {
-    const fromCell = selectedCellSelector(state)
     return {
       type: 'MOVE_UNIT',
       cid,
-      role: fromCell.role,
+      role: selectedCell.role,
       player: currentPlayer,
     }
   }

@@ -91,15 +91,14 @@ const findCellId = (cells, i, j) => {
 
 const cellNeighbours = (cells, c) => {
   const find = (i, j) => findCellId(cells, i, j)
-  return Array.apply(null, {
-    0: find(c.i, c.j + 1),
-    1: find(c.i + 1, c.j),
-    2: find(c.i + 1, c.j - 1),
-    3: find(c.i, c.j - 1),
-    4: find(c.i - 1, c.j),
-    5: find(c.i - 1, c.j + 1),
-    length: 6
-  })
+  return [
+    find(c.i, c.j + 1),
+    find(c.i + 1, c.j),
+    find(c.i + 1, c.j - 1),
+    find(c.i, c.j - 1),
+    find(c.i - 1, c.j),
+    find(c.i - 1, c.j + 1),
+  ]
 }
 
 const cellNeighbourIds = (cells, c) => (
@@ -131,7 +130,8 @@ const supplyChainIdsSetSelector = createSelector(
   playerCellsSelector,
   playerCastleCellSelector,
   playerPeasantCellsSelector,
-  (cells, playerCells, playerCastle, playerPeasantCells) => {
+  playerSelector,
+  (cells, playerCells, playerCastle, playerPeasantCells, playerId) => {
     let ids = new Set
     let markedIds = new Set
     const foo = (cells, cell) => {
@@ -140,7 +140,7 @@ const supplyChainIdsSetSelector = createSelector(
           if (!cell) return;
           if (typeof cell.role !== 'number') {
             ids.add(cell.cid)
-          } else if (!markedIds.has(cell.cid) && cell.role !== ROLES.PEASANT && cell.role !== ROLES.CASTLE) {
+          } else if (!markedIds.has(cell.cid) && cell.role !== ROLES.PEASANT && cell.role !== ROLES.CASTLE && cell.player === playerId) {
             markedIds.add(cell.cid)
             foo(cells, cell)
           }
