@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
-import { ROLE_PRICES, ROLE_NAMES } from '../Consts'
+import { ROLES, ROLE_PRICES, ROLE_NAMES } from '../Consts'
+import _ from 'lodash'
 
 const cellsSelector = ({ cells }) => cells
 const playersSelector = ({ players }) => players
@@ -82,4 +83,107 @@ export const playerUnitsSelector = createSelector(
       }))
     }
   )
+)
+
+const findCellId = (cells, i, j) => {
+  return _.find(cells, {i, j})
+}
+
+const cellNeighbours = (cells, c) => {
+  const find = (i, j) => findCellId(cells, i, j)
+  return Array.apply(null, {
+    0: find(c.i, c.j + 1),
+    1: find(c.i + 1, c.j),
+    2: find(c.i + 1, c.j - 1),
+    3: find(c.i, c.j - 1),
+    4: find(c.i - 1, c.j),
+    5: find(c.i - 1, c.j + 1),
+    length: 6
+  })
+}
+
+const cellNeighbourIds = (cells, c) => (
+  cellNeighbours(cells, c).map(cell => cell.cid)
+)
+
+const selectedCellNeighbourIdsSelector = createSelector(
+  cellsSelector,
+  selectedCellSelector,
+  (cells, selectedCell) => (selectedCell ? cellNeighbourIds(cells, selectedCell) : null)
+)
+
+const playerPeasantCellsSelector = createSelector(
+  playerCellsSelector,
+  (cells) => {
+    return cells.filter(c => c.role === ROLES.PEASANT)
+  }
+)
+
+const playerCastleCellSelector = createSelector(
+  playerCellsSelector,
+  (cells) => {
+    return cells.filter(c => c.role === ROLES.CASTLE)[0]
+  }
+)
+
+const supplyChainIdsSetSelector = createSelector(
+  cellsSelector,
+  playerCellsSelector,
+  playerCastleCellSelector,
+  playerPeasantCellsSelector,
+  (cells, playerCells, playerCastle, playerPeasantCells) => {
+    let ids = new Set
+    let markedIds = new Set
+    const foo = (cells, cell) => {
+      cellNeighbours(cells, cell).forEach(
+        cell => {
+          if (!cell) return;
+          if (typeof cell.role !== 'number') {
+            ids.add(cell.cid)
+          } else if (!markedIds.has(cell.cid) && cell.role !== ROLES.PEASANT && cell.role !== ROLES.CASTLE) {
+            markedIds.add(cell.cid)
+            foo(cells, cell)
+          }
+        }
+      )
+    }
+    playerCastle && foo(cells, playerCastle)
+    playerPeasantCells.forEach(
+      cell => foo(cells, cell)
+    )
+
+    return ids
+  }
+)
+
+export const highlightedCellsSelector = createSelector(
+  cellsSelector,
+  selectedCellNeighbourIdsSelector,
+  supplyChainIdsSetSelector,
+  stepSelector,
+  (cells, selectedCellNeighbourIds, supplyChainIdsSet, step) => {
+    if (!selectedCellNeighbourIds) {
+      return {
+        cells: cells.map(cell => {
+          return {
+            ...cell,
+            highlighted: supplyChainIdsSet.has(cell.cid)
+          }
+        })
+      }
+    } else {
+      if (step === 0) return {cells}
+      return {
+        cells: cells.map(cell => {
+          if (_.includes(selectedCellNeighbourIds, cell.cid)) {
+            return {
+              ...cell,
+              highlighted: true
+            }
+          }
+          return cell
+        })
+      }
+    }
+  }
 )

@@ -31,7 +31,26 @@ export const ROLE_PRICES = {
 // A kind of a state machine that should contain
 // action to be performed on the next click
 export const ROLE_STEPS = {
-  0: ['move'],
-  1: ['move2'],
-  2: ['move', 'cast']
+  0: [
+    {
+      move: 'MOVE',
+      radius: 1,
+    }
+  ],
+  1: [
+    {
+      move: 'HORSE_JUMP',
+      radius: 2,
+    }
+  ],
+  2: [
+    {
+      move: 'MOVE',
+      radius: 1,
+    },
+    {
+      move: 'PROSELYTIZE',
+      radius: 1,
+    }
+  ],
 }

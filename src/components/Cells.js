@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { clickCell } from '../actions'
 import Cell from './Cell'
+import { highlightedCellsSelector } from '../selectors'
 
 export default class Cells extends Component {
   render() {
@@ -32,4 +33,4 @@ const mapDispatchToProps = (dispatch) => (
   }
 )
 
-export default connect(mapStateToProps, mapDispatchToProps)(Cells)
+export default connect(highlightedCellsSelector, mapDispatchToProps)(Cells)

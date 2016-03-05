@@ -1,3 +1,5 @@
+import { ROLES } from '../Consts'
+
 const n = 5
 const r = 30
 const r0 = r * Math.cos(Math.PI/6)
@@ -30,11 +32,12 @@ const Cell = (i, j) => {
     getData: function() {
       return {
         cid: `${i}-${j}`,
+        i,
+        j,
         x: this.x,
         y: this.y,
         role: this.role,
         player: this.player,
-        sides: this.sides,
       }
     }
   }
@@ -70,10 +73,8 @@ function getFlatCellsState(cells) {
   let newCells = [];
   for (var i = 1; i < n*2; i++) {
     for (var j = 1; j < n*2; j++) {
-      const cell = Utils.getArrayElement(cells,i,j)
-      if (cell) {
-        newCells.push(cell.getData())
-      }
+      const cell = Utils.getArrayElement(cells, i, j)
+      cell && newCells.push(cell.getData()) //  cell ? cell.getData() : undefined
     }
   }
   return newCells
@@ -91,7 +92,22 @@ const cell = (state, action) => {
         player '0' // '1'
       }
       */
+      if (state.i === n && state.j === 1) {
+        return {
+          ...state,
+          role: ROLES.CASTLE,
+          player: 0
+        }
+      }
+      if (state.i === n && state.j === (n * 2) - 1) {
+        return {
+          ...state,
+          role: ROLES.CASTLE,
+          player: 1
+        }
+      }
       return state
+
     case 'PLACE_NEW_UNIT':
       if (state.cid !== action.cid) {
         return state
@@ -130,7 +146,6 @@ const cells = (state, action) => {
 
   switch (action.type) {
     case 'BEGIN':
-      return state
     case 'SELECT_UNIT':
     case 'PLACE_NEW_UNIT':
     case 'MOVE_UNIT':
