@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { joinClasses } from '../Utils'
-import { PLAYER_COLORS, ROLE_NAMES } from '../Consts'
+import { PLAYER_COLORS, ROLE_NAMES, ROLES } from '../Consts'
 
 export default class Cell extends Component {
   render() {
     const { onClick, className, style, role, cid } = this.props
     return (
       <div onClick={onClick} className={className} style={style}>
-        <span className="role">{cid + ' ' + role}</span>
+        <span className="role">{role}</span>
       </div>
     )
   }
@@ -19,7 +19,7 @@ const mapStateToProps = (state, {
   cid, x, y, player, role, selected, highlighted, onCellClick
 }) => (
   {
-    onClick: (highlighted) && onCellClick.bind(this, {cid, role, player}),
+    onClick: (highlighted) && onCellClick.bind(this, {cid, role, player}), //|| (typeof role === 'number' && (role !== ROLES.CASTLE))
     player,
     cid: cid,
     role: ROLE_NAMES[role],

@@ -140,7 +140,12 @@ const supplyChainIdsSetSelector = createSelector(
           if (!cell) return;
           if (typeof cell.role !== 'number') {
             ids.add(cell.cid)
-          } else if (!markedIds.has(cell.cid) && cell.role !== ROLES.PEASANT && cell.role !== ROLES.CASTLE && cell.player === playerId) {
+          } else if (
+            !markedIds.has(cell.cid) &&
+            cell.player === playerId &&
+            cell.role !== ROLES.PEASANT &&
+            cell.role !== ROLES.CASTLE
+          ) {
             markedIds.add(cell.cid)
             foo(cells, cell)
           }
