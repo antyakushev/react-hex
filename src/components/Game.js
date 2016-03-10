@@ -11,15 +11,15 @@ const Game = class Game extends Component {
     this.state = {
       rotation: 0
     }
+    this.swiping = ::this.swiping
   }
   swiping(e, delta) {
     this.setState({rotation: this.state.rotation + delta / 60000})
-    console.log('swiping!', arguments)
   }
   render() {
     const {turn, onStartClick} = this.props
     return (
-      <Swipeable onSwiping={::this.swiping}>
+      <Swipeable onSwiping={this.swiping}>
       <div>
         <div className='info'>
           <div>{`Player ${turn.player}`}</div>

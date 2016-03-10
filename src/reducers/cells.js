@@ -18,28 +18,13 @@ const Cell = (i, j) => {
   const x = x0 + 2 * Math.cos(directions[0]) * r0 * j + i*r0
   const y = y0 + 2 * Math.sin(directions[1]) * r0 * i
   return {
+    cid: `${i}-${j}`,
+    i,
+    j,
     x: x * 2 / (n * 2 - 1),
     y: y * 2 / (n * 2 - 1) - 10,
-    sides: [],
     role: null,
     player: null,
-    connect : function(otherCell, toSide) {
-      if (otherCell && !this.sides[toSide]) {
-        this.sides[toSide] = otherCell;
-        otherCell.sides[ Utils.oppositeSide(toSide) ] = this;
-      }
-    },
-    getData: function() {
-      return {
-        cid: `${i}-${j}`,
-        i,
-        j,
-        x: this.x,
-        y: this.y,
-        role: this.role,
-        player: this.player,
-      }
-    }
   }
 }
 
@@ -55,18 +40,7 @@ function createCells(n) {
       }
     }
   }
-  for (var i = 1; i < n*2; i++) {
-    for (var j = 1; j < n*2; j++) {
-      if (i + j <= n || i + j >= n*4 - n) {
-
-      } else {
-        a[i][j].connect(Utils.getArrayElement(a, i, j+1), 0)
-        a[i][j].connect(Utils.getArrayElement(a, i+1, j), 1)
-        a[i][j].connect(Utils.getArrayElement(a, i+1, j-1), 2)
-      }
-    }
-  }
-  return a;
+  return a
 }
 
 function getFlatCellsState(cells) {
@@ -74,7 +48,7 @@ function getFlatCellsState(cells) {
   for (var i = 1; i < n*2; i++) {
     for (var j = 1; j < n*2; j++) {
       const cell = Utils.getArrayElement(cells, i, j)
-      cell && newCells.push(cell.getData()) //  cell ? cell.getData() : undefined
+      cell && newCells.push(cell) //  cell ? cell.getData() : undefined
     }
   }
   return newCells
