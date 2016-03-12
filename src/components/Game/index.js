@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Swipeable from 'react-swipeable'
-import Cells from './Cells'
-import Units from './Units'
-import { begin } from '../actions'
+import styles from './style.css'
+import { begin } from 'actions'
+import Cells from 'Cells'
+import Units from 'Units'
+import { joinClasses } from 'Utils'
 
 const Game = class Game extends Component {
   constructor(props) {
@@ -19,21 +21,23 @@ const Game = class Game extends Component {
   render() {
     const {turn, onStartClick} = this.props
     return (
-      <Swipeable onSwiping={this.swiping}>
       <div>
-        <div className='info'>
-          <div>{`Player ${turn.player}`}</div>
-          <div>{turn.step && `Step ${turn.step}`}</div>
-          <div onClick={onStartClick}>
-            {'Start'}
+        <div className={joinClasses(styles.startScreen, turn.started && styles.hidden)}>
+          <div className={styles.startButton} onClick={onStartClick}>
+          {'Start'}
           </div>
-          <Units/>
         </div>
-        <div style={{transform: `rotateX(45deg) rotateZ(${this.state.rotation}turn)`}}>
-          <Cells/>
-        </div>
+        <Swipeable onSwiping={this.swiping}>
+          <div className={styles.info}>
+            <div>{`Player ${turn.player}`}</div>
+            <div>{turn.step && `Step ${turn.step}`}</div>
+            <Units/>
+          </div>
+          <div style={{transform: `rotateX(45deg) rotateZ(${this.state.rotation}turn)`}}>
+            <Cells/>
+          </div>
+        </Swipeable>
       </div>
-      </Swipeable>
     );
   }
 }

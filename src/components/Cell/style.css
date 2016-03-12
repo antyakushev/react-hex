@@ -1,0 +1,60 @@
+.cell {
+  margin: 2 vmin; /*0 7px;*/
+  cursor: pointer;
+
+  &:before {
+    transform: rotate(60deg);
+  }
+
+  &:after {
+    transform: rotate(-60deg);
+  }
+
+  &,
+  &:before,
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    background-color: greenyellow;
+    height: 6.7995vmin; /*26px;*/
+    width: 10vmin; /*44px;*/
+    border-radius: 15%/25%;
+    left: -2px;
+    top: -2px;
+    border: 2px solid transparent;
+    border-color: transparent green;
+    background-clip: content-box;
+  }
+}
+
+.hl {
+  filter: brightness(1.5);
+
+  &:hover,
+  &:hover:before,
+  &:hover:after {
+    background-color: rebeccapurple;
+  }
+}
+
+.selected {
+  &,
+  &:before,
+  &:after {
+    border-color: transparent yellow;
+  }
+}
+
+.role {
+  position: absolute;
+  height: 1.5em;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  text-align: center;
+  font-size: 2vmin;
+  z-index: 10;
+}

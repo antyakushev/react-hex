@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { clickCell } from '../actions'
-import Cell from './Cell'
-import { highlightedCellsSelector } from '../selectors'
+import styles from './style.css'
+import { clickCell } from 'actions'
+import { highlightedCellsSelector } from 'selectors'
+import Cell from 'Cell'
 
 export default class Cells extends Component {
   render() {
     const {cells, onCellClick} = this.props
     return (
-      <div className='map'>
+      <div className={styles.cells}>
         {
           cells.map( (c,i) =>
             <Cell key={i} {...c} onCellClick={onCellClick}/>

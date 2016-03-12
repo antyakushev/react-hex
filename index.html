@@ -13,15 +13,6 @@
         perspective: 800px;
         perspective: 100vmin;
       }
-      .info {
-        position: fixed;
-      }
-    	.map {
-        position: relative;
-  		  margin: auto;
-  		  width: 100vmin;
-  		  height: 100vmin;
-    	}
 
       /* 😃 Some cool styles: */
 
@@ -58,71 +49,6 @@
         background-clip: content-box;
       }
       */
-
-    	.cell,
-    	.cell:before,
-    	.cell:after {
-    		content: "";
-    		display: block;
-    		position: absolute;
-    		top: 0;
-    		background-color: greenyellow;
-    		height: 6.7995vmin; //26px;
-    		width: 10vmin; //44px;
-        border-radius: 15%/25%;
-        left: -2px;
-        top: -2px;
-        border: 2px solid transparent;
-        border-color: transparent green;
-        background-clip: content-box;
-    	}
-    	.cell {
-    		margin: 2 vmin; //0 7px;
-    		cursor: pointer;
-    	}
-    	.cell:before {
-    		transform: rotate(60deg);
-    	}
-    	.cell:after {
-    		transform: rotate(-60deg);
-    	}
-    	.hl {
-    		-webkit-filter: brightness(1.5);
-    	}
-
-    	.hl.cell:hover, .hl.cell:hover:before, .hl.cell:hover:after {
-    		background-color: rebeccapurple;
-    	}
-
-      .cell.selected, .cell.selected:before, .cell.selected:after {
-        border-color: transparent yellow;
-      }
-
-    	.cell .role {
-        position: absolute;
-        height: 1.5em;
-        width: 100%;
-        top: 0;
-        bottom: 0;
-        margin: auto;
-        text-align: center;
-        font-size: 16px;
-        z-index: 10;
-    	}
-
-      .unit {
-        color: lightgray;
-        list-style: none;
-        cursor: pointer;
-        pointer-events: none;
-      }
-      .unit.selected {
-        font-weight: bold;
-      }
-      .unit.available {
-        color: black;
-        pointer-events: auto;
-      }
     </style>
   </head>
   <body>

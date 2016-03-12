@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { selectNewUnit } from '../actions'
-import { playerUnitsSelector } from '../selectors'
-import UnitSwitcher from './UnitSwitcher'
+import styles from './style.css'
+import { selectNewUnit } from 'actions'
+import { playerUnitsSelector } from 'selectors'
+import UnitSwitcher from 'UnitSwitcher'
 
 /*
 class List extends Component {
@@ -25,7 +26,7 @@ class Units extends Component {
   render() {
     const {units, onUnitClick} = this.props
     return (
-      <ul className='units'>
+      <ul className={styles.units}>
         {
           units.map( (c, i) =>
             <UnitSwitcher key={i} {...c} onUnitClick={onUnitClick}/>

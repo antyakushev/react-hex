@@ -1,0 +1,15 @@
+.unit {
+  color: lightgray;
+  list-style: none;
+  cursor: pointer;
+  pointer-events: none;
+}
+
+.selected {
+  font-weight: bold;
+}
+
+.available {
+  color: black;
+  pointer-events: auto;
+}

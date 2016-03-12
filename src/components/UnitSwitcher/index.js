@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { joinClasses } from '../Utils'
-import { ROLES } from '../Consts'
+import styles from './style.css'
+import { joinClasses } from 'Utils'
+import { ROLES } from 'Consts'
 
 class Switcher extends Component {
   render() {
@@ -18,9 +19,9 @@ const mapStateToProps = (undefined, {roleId, role, count, selected, available, o
     onClick: onUnitClick.bind(this, roleId),
     text: `${role} ${count}`,
     className: joinClasses(
-      'unit'
-      ,selected && 'selected'
-      ,available && 'available'
+      styles.unit,
+      selected && styles.selected,
+      available && styles.available
     )
   }
 )

@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
+import styles from './style.css'
 import { connect } from 'react-redux'
-import { joinClasses } from '../Utils'
-import { PLAYER_COLORS, ROLE_NAMES, ROLES } from '../Consts'
+import { joinClasses } from 'Utils'
+import { PLAYER_COLORS, ROLE_NAMES, ROLES } from 'Consts'
 
 export default class Cell extends Component {
   render() {
     const { onClick, className, style, role, cid } = this.props
     return (
       <div onClick={onClick} className={className} style={style}>
-        <span className="role">{role}</span>
+        <span className={styles.role}>{role}</span>
       </div>
     )
   }
@@ -29,9 +30,9 @@ const mapStateToProps = (state, {
       color: PLAYER_COLORS[player]
     },
     className: joinClasses(
-      'cell',
-      selected && 'selected',
-      highlighted && 'hl',
+      styles.cell,
+      selected && styles.selected,
+      highlighted && styles.hl,
     )
   }
 )

@@ -14,6 +14,11 @@ const nextTurn = (state) => ({
 
 const turn = (state, action) => {
   switch (action.type) {
+    case 'BEGIN':
+      return {
+        ...state,
+        started: true
+      }
     case 'PLACE_NEW_UNIT':
       if (action.role === ROLES.PEASANT && state.step === 0) {
         return nextStep(state)
