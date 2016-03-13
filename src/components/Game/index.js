@@ -6,6 +6,7 @@ import { begin } from 'actions'
 import Cells from 'Cells'
 import Units from 'Units'
 import { joinClasses } from 'Utils'
+import { PLAYER_COLORS } from 'Consts'
 
 const Game = class Game extends Component {
   constructor(props) {
@@ -27,10 +28,15 @@ const Game = class Game extends Component {
           {'Start'}
           </div>
         </div>
+
         <Swipeable onSwiping={this.swiping}>
           <div className={styles.info}>
-            <div>{`Player ${turn.player}`}</div>
-            <div>{turn.step && `Step ${turn.step}`}</div>
+            <div style={{color: PLAYER_COLORS[turn.player]}}>
+              {`Player ${turn.player}'s turn`}
+            </div>
+            <div>
+              {turn.step && `Step ${turn.step}`}
+            </div>
             <Units/>
           </div>
           <div style={{transform: `rotateX(45deg) rotateZ(${this.state.rotation}turn)`}}>

@@ -1,4 +1,4 @@
-import { ROLES } from '../Consts'
+import { ROLES } from 'Consts'
 
 const n = 5
 const r = 30
@@ -58,14 +58,6 @@ function getFlatCellsState(cells) {
 const cell = (state, action) => {
   switch (action.type) {
     case 'BEGIN':
-      /*
-      Probably take [n - 1, 0] and [n - 1, (n * 2) - 2]
-      Put
-      {
-        role: 'fortress',
-        player '0' // '1'
-      }
-      */
       if (state.i === n && state.j === 1) {
         return {
           ...state,

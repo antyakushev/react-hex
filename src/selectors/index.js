@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
-import { ROLES, ROLE_PRICES, ROLE_NAMES } from '../Consts'
 import _ from 'lodash'
+import { ROLES, ROLE_PRICES, ROLE_NAMES, ROLES_SUPPLY } from 'Consts'
 
 const cellsSelector = ({ cells }) => cells
 const playersSelector = ({ players }) => players
@@ -143,8 +143,7 @@ const supplyChainIdsSetSelector = createSelector(
           } else if (
             !markedIds.has(cell.cid) &&
             cell.player === playerId &&
-            cell.role !== ROLES.PEASANT &&
-            cell.role !== ROLES.CASTLE
+            !_.includes(ROLES_SUPPLY, cell.role)
           ) {
             markedIds.add(cell.cid)
             foo(cells, cell)
@@ -166,8 +165,9 @@ export const highlightedCellsSelector = createSelector(
   selectedCellNeighbourIdsSelector,
   supplyChainIdsSetSelector,
   stepSelector,
-  (cells, selectedCellNeighbourIds, supplyChainIdsSet, step) => {
-    if (!selectedCellNeighbourIds) {
+  currentPlayerSelector,
+  (cells, selectedCellNeighbourIds, supplyChainIdsSet, step, currentPlayer) => {
+    if (typeof currentPlayer.selected === 'number') {
       return {
         cells: cells.map(cell => {
           return {
@@ -176,7 +176,8 @@ export const highlightedCellsSelector = createSelector(
           }
         })
       }
-    } else {
+    }
+    if (selectedCellNeighbourIds) {
       if (step === 0) return {cells}
       return {
         cells: cells.map(cell => {
@@ -190,5 +191,6 @@ export const highlightedCellsSelector = createSelector(
         })
       }
     }
+    return {cells}
   }
 )

@@ -1,5 +1,10 @@
-import { nextPlayer } from '../Utils'
-import { ROLES } from '../Consts'
+import { nextPlayer } from 'Utils'
+import { ROLES, ROLE_UNITS_PER_TURN } from 'Consts'
+
+const setStep = (state, step) => ({
+  ...state,
+  step: state.step + 1
+})
 
 const nextStep = (state) => ({
   ...state,
@@ -19,14 +24,16 @@ const turn = (state, action) => {
         ...state,
         started: true
       }
+    case 'SELECT_NEW_UNIT':
+      return setStep(state, 1)
     case 'PLACE_NEW_UNIT':
-      if (action.role === ROLES.PEASANT && state.step === 0) {
+      if (state.step < ROLE_UNITS_PER_TURN[action.role]) {
         return nextStep(state)
       } else {
         return nextTurn(state)
       }
     case 'SELECT_UNIT':
-      return nextStep(state)
+      return setStep(state, 1)
     case 'MOVE_UNIT':
       // TODO: unsimplify this!
       return nextTurn(state)

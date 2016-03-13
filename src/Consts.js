@@ -54,3 +54,14 @@ export const ROLE_STEPS = {
     }
   ],
 }
+
+export const ROLE_UNITS_PER_TURN = {
+  0: 2,
+  1: 1,
+  2: 1,
+}
+
+export const ROLES_SUPPLY = [
+  0,
+  1000
+]

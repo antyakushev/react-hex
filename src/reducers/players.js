@@ -1,28 +1,29 @@
 // Contains players which contain units
-import { nextPlayer } from '../Utils'
-import { ROLES, ROLE_PRICES } from '../Consts'
+import { nextPlayer, isLastStep } from 'Utils'
+import { ROLES, ROLE_PRICES } from 'Consts'
 
 // TODO: allow choosing the number of players
 const initialPlayersState =
   Array.apply(null, Array(2)).map(
     () => ({
-      selected: 0
+      selected: null
     })
   )
 
-const player = ({selected}, action) => {
+const player = (state, action) => {
+  const { selected } = state
   switch (action.type) {
     case 'SELECT_NEW_UNIT':
       return {
         selected: action.role
       }
     case 'PLACE_NEW_UNIT':
-      let role = action.role
-      while (ROLE_PRICES[role] * 2 > -action.economics && role !== 0) { // WE SEE THE FUTURE
-        role--
-      }
-      return {
-        selected: role
+      if (isLastStep(action.role, action.step)) {
+        return {
+          selected: null
+        }
+      } else {
+        return state
       }
   }
 }
@@ -33,7 +34,7 @@ const players = (state, action) => {
     case 'PLACE_NEW_UNIT':
       return state.map(
         (p, i) => (
-          i !== action.player ? p : player(state, action)
+          i !== action.player ? p : player(p, action)
         )
       )
     default:

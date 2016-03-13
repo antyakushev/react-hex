@@ -36,7 +36,7 @@ export const clickCell = ({cid, role, player}) => {
       cid,
       player: currentPlayer,
       role: currentPlayerSelector(state).selected,
-      economics: playerEconomics(state)
+      step
     }
   }
   if (step > 0) {
@@ -45,6 +45,7 @@ export const clickCell = ({cid, role, player}) => {
       cid,
       role: selectedCell.role,
       player: currentPlayer,
+      step
     }
   }
   // TODO: MOVE_UNIT and PROSELYTIZE
