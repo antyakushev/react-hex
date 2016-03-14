@@ -17,10 +17,10 @@ const Game = class Game extends Component {
     this.swiping = ::this.swiping
   }
   swiping(e, delta) {
-    this.setState({rotation: this.state.rotation + delta / 60000})
+    this.setState({ rotation: this.state.rotation + delta / 60000 })
   }
   render() {
-    const {turn, onStartClick} = this.props
+    const { turn, onStartClick } = this.props
     return (
       <div>
         <div className={joinClasses(styles.startScreen, turn.started && styles.hidden)}>
@@ -31,20 +31,20 @@ const Game = class Game extends Component {
 
         <Swipeable onSwiping={this.swiping}>
           <div className={styles.info}>
-            <div style={{color: PLAYER_COLORS[turn.player]}}>
+            <div style={{ color: PLAYER_COLORS[turn.player] }}>
               {`Player ${turn.player}'s turn`}
             </div>
             <div>
               {turn.step && `Step ${turn.step}`}
             </div>
-            <Units/>
+            <Units />
           </div>
-          <div style={{transform: `rotateX(45deg) rotateZ(${this.state.rotation}turn)`}}>
-            <Cells/>
+          <div style={{ transform: `rotateX(45deg) rotateZ(${this.state.rotation}turn)` }}>
+            <Cells />
           </div>
         </Swipeable>
       </div>
-    );
+    )
   }
 }
 
@@ -56,4 +56,4 @@ const mapDispatchToProps = (dispatch) => (
   }
 )
 
-export default connect((state, props) => ({...state, ...props}), mapDispatchToProps)(Game)
+export default connect((state, props) => ({ ...state, ...props }), mapDispatchToProps)(Game)

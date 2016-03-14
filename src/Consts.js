@@ -15,9 +15,9 @@ export const ROLES = {
 }
 
 export const ROLE_NAMES = {
-  0:    'PEASANT',
-  1:    'KNIGHT',
-  2:    'BISHOP',
+  0: 'PEASANT',
+  1: 'KNIGHT',
+  2: 'BISHOP',
   1000: 'CASTLE',
 }
 

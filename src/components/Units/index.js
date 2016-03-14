@@ -24,12 +24,12 @@ class List extends Component {
 
 class Units extends Component {
   render() {
-    const {units, onUnitClick} = this.props
+    const { units, onUnitClick } = this.props
     return (
-      <ul className={styles.units}>
+      <ul className={ styles.units }>
         {
-          units.map( (c, i) =>
-            <UnitSwitcher key={i} {...c} onUnitClick={onUnitClick}/>
+          units.map((c, i) =>
+            <UnitSwitcher key={i} {...c} onUnitClick={onUnitClick} />
           )
         }
       </ul>

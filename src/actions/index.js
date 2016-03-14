@@ -2,7 +2,7 @@
 import store from '../store'
 import { selectedCellSelector, stepSelector, playerSelector, currentPlayerSelector, playerEconomics } from '../selectors'
 
-export const begin = (numberOfPlayers=2) => (
+export const begin = (numberOfPlayers = 2) => (
   {
     type: 'BEGIN',
     numberOfPlayers
@@ -17,7 +17,7 @@ export const selectNewUnit = (role) => {
   }
 }
 
-export const clickCell = ({cid, role, player}) => {
+export const clickCell = ({ cid, role, player }) => {
   const state = store.getState()
   const currentPlayer = playerSelector(state)
   const step = stepSelector(state)

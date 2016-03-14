@@ -7,24 +7,18 @@ import Cell from 'Cell'
 
 export default class Cells extends Component {
   render() {
-    const {cells, onCellClick} = this.props
+    const { cells, onCellClick } = this.props
     return (
       <div className={styles.cells}>
         {
-          cells.map( (c,i) =>
-            <Cell key={i} {...c} onCellClick={onCellClick}/>
+          cells.map((c, i) =>
+            <Cell key={i} {...c} onCellClick={onCellClick} />
           )
         }
       </div>
     );
   }
 }
-
-const mapStateToProps = ({cells}) => (
-  {
-    cells
-  }
-)
 
 const mapDispatchToProps = (dispatch) => (
   {

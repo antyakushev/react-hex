@@ -86,7 +86,7 @@ export const playerUnitsSelector = createSelector(
 )
 
 const findCellId = (cells, i, j) => {
-  return _.find(cells, {i, j})
+  return _.find(cells, { i, j })
 }
 
 const cellNeighbours = (cells, c) => {
@@ -102,7 +102,7 @@ const cellNeighbours = (cells, c) => {
 }
 
 const cellNeighbourIds = (cells, c) => (
-  cellNeighbours(cells, c).map(cell => cell.cid)
+  cellNeighbours(cells, c).map(cell => cell && cell.cid)
 )
 
 const selectedCellNeighbourIdsSelector = createSelector(
@@ -111,30 +111,29 @@ const selectedCellNeighbourIdsSelector = createSelector(
   (cells, selectedCell) => (selectedCell ? cellNeighbourIds(cells, selectedCell) : null)
 )
 
-const playerPeasantCellsSelector = createSelector(
+const playerSupplyCellsSelector = createSelector(
   playerCellsSelector,
   (cells) => {
-    return cells.filter(c => c.role === ROLES.PEASANT)
+    return cells.filter(c => _.includes(ROLES_SUPPLY, c.role))
   }
 )
 
-const playerCastleCellSelector = createSelector(
+const playerCellsIdsSelector = createSelector(
   playerCellsSelector,
   (cells) => {
-    return cells.filter(c => c.role === ROLES.CASTLE)[0]
+    return cells && cells.map(c => c.cid)
   }
 )
 
 const supplyChainIdsSetSelector = createSelector(
   cellsSelector,
   playerCellsSelector,
-  playerCastleCellSelector,
-  playerPeasantCellsSelector,
+  playerSupplyCellsSelector,
   playerSelector,
-  (cells, playerCells, playerCastle, playerPeasantCells, playerId) => {
-    let ids = new Set
-    let markedIds = new Set
-    const foo = (cells, cell) => {
+  (cells, playerCells, playerSupplyCells, playerId) => {
+    const ids = new Set
+    const markedIds = new Set
+    const spreadSupply = (cells, cell) => {
       cellNeighbours(cells, cell).forEach(
         cell => {
           if (!cell) return;
@@ -146,14 +145,13 @@ const supplyChainIdsSetSelector = createSelector(
             !_.includes(ROLES_SUPPLY, cell.role)
           ) {
             markedIds.add(cell.cid)
-            foo(cells, cell)
+            spreadSupply(cells, cell)
           }
         }
       )
     }
-    playerCastle && foo(cells, playerCastle)
-    playerPeasantCells.forEach(
-      cell => foo(cells, cell)
+    playerSupplyCells.forEach(
+      cell => spreadSupply(cells, cell)
     )
 
     return ids
@@ -166,7 +164,8 @@ export const highlightedCellsSelector = createSelector(
   supplyChainIdsSetSelector,
   stepSelector,
   currentPlayerSelector,
-  (cells, selectedCellNeighbourIds, supplyChainIdsSet, step, currentPlayer) => {
+  playerCellsIdsSelector,
+  (cells, selectedCellNeighbourIds, supplyChainIdsSet, step, currentPlayer, playerCellsIds) => {
     if (typeof currentPlayer.selected === 'number') {
       return {
         cells: cells.map(cell => {
@@ -177,11 +176,11 @@ export const highlightedCellsSelector = createSelector(
         })
       }
     }
-    if (selectedCellNeighbourIds) {
-      if (step === 0) return {cells}
+    if (selectedCellNeighbourIds || playerCellsIds) {
+      const ids = step === 0 ? playerCellsIds : selectedCellNeighbourIds
       return {
         cells: cells.map(cell => {
-          if (_.includes(selectedCellNeighbourIds, cell.cid)) {
+          if (_.includes(ids, cell.cid)) {
             return {
               ...cell,
               highlighted: true
@@ -191,6 +190,6 @@ export const highlightedCellsSelector = createSelector(
         })
       }
     }
-    return {cells}
+    return { cells }
   }
 )

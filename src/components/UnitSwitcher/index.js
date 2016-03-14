@@ -10,11 +10,11 @@ class Switcher extends Component {
       <li className={this.props.className} onClick={this.props.onClick}>
         {this.props.text}
       </li>
-    );
+    )
   }
 }
 
-const mapStateToProps = (undefined, {roleId, role, count, selected, available, onUnitClick}) => (
+const mapStateToProps = (state, { roleId, role, count, selected, available, onUnitClick }) => (
   {
     onClick: onUnitClick.bind(this, roleId),
     text: `${role} ${count}`,
