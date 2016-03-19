@@ -20,7 +20,7 @@ const mapStateToProps = (state, {
   cid, x, y, player, role, selected, highlighted, onCellClick
 }) => (
   {
-    onClick: (highlighted) && onCellClick.bind(this, {cid, role, player}), //|| (typeof role === 'number' && (role !== ROLES.CASTLE))
+    onClick: highlighted && onCellClick.bind(this, {cid, role, player}), //|| (typeof role === 'number' && (role !== ROLES.CASTLE))
     player,
     cid: cid,
     role: ROLE_NAMES[role],

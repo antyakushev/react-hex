@@ -175,8 +175,7 @@ export const highlightedCellsSelector = createSelector(
           }
         })
       }
-    }
-    if (selectedCellNeighbourIds || playerCellsIds) {
+    } else if (selectedCellNeighbourIds || playerCellsIds) {
       const ids = step === 0 ? playerCellsIds : selectedCellNeighbourIds
       return {
         cells: cells.map(cell => {

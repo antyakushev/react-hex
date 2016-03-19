@@ -3,7 +3,7 @@ import { ROLES, ROLE_UNITS_PER_TURN } from 'Consts'
 
 const setStep = (state, step) => ({
   ...state,
-  step: state.step + 1
+  step
 })
 
 const nextStep = (state) => ({

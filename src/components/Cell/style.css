@@ -1,6 +1,7 @@
 .cell {
   margin: 2 vmin; /*0 7px;*/
   cursor: pointer;
+  filter: sepia(0.5);
 
   &:before {
     transform: rotate(60deg);
@@ -29,21 +30,23 @@
   }
 }
 
-.hl {
-  filter: brightness(1.5);
-
-  &:hover,
-  &:hover:before,
-  &:hover:after {
-    background-color: rebeccapurple;
-  }
-}
-
 .selected {
   &,
   &:before,
   &:after {
     border-color: transparent yellow;
+  }
+}
+
+.hl {
+  filter: grayscale(0);
+
+  &:hover {
+    &,
+    &:before,
+    &:after {
+      border-color: transparent yellow;
+    }
   }
 }
 

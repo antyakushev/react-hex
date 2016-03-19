@@ -83,6 +83,11 @@ const cell = (state, action) => {
         role: action.role,
         player: action.player
       }
+    case 'SELECT_NEW_UNIT':
+      return {
+        ...state,
+        selected: false
+      }
     case 'SELECT_UNIT':
       return {
         ...state,
@@ -113,6 +118,7 @@ const cells = (state, action) => {
   switch (action.type) {
     case 'BEGIN':
     case 'SELECT_UNIT':
+    case 'SELECT_NEW_UNIT':
     case 'PLACE_NEW_UNIT':
     case 'MOVE_UNIT':
       return state.map(c =>

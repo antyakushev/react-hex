@@ -17,6 +17,10 @@ const player = (state, action) => {
       return {
         selected: action.role
       }
+    case 'SELECT_UNIT':
+      return {
+        selected: null
+      }
     case 'PLACE_NEW_UNIT':
       if (isLastStep(action.role, action.step)) {
         return {
@@ -31,6 +35,7 @@ const player = (state, action) => {
 const players = (state, action) => {
   switch (action.type) {
     case 'SELECT_NEW_UNIT':
+    case 'SELECT_UNIT':
     case 'PLACE_NEW_UNIT':
       return state.map(
         (p, i) => (
