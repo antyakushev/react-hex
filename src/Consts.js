@@ -21,6 +21,13 @@ export const ROLE_NAMES = {
   1000: 'CASTLE',
 }
 
+export const SELECTABLE_ROLES = {
+  0: true,
+  1: true,
+  2: true,
+  1000: false,
+}
+
 export const ROLE_PRICES = {
   0: -1,
   1: 2,

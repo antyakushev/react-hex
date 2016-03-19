@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
+import { ROLES, ROLE_PRICES, ROLE_NAMES, SELECTABLE_ROLES, ROLES_SUPPLY} from 'Consts'
 import _ from 'lodash'
-import { ROLES, ROLE_PRICES, ROLE_NAMES, ROLES_SUPPLY } from 'Consts'
 
 const cellsSelector = ({ cells }) => cells
 const playersSelector = ({ players }) => players
@@ -67,12 +67,14 @@ export const playerUnitsSelector = createSelector(
   currentPlayerSelector,
   (counts, economics, player) => (
     {
-      units: counts.map((count, i) => ({
+      units: counts
+      .filter((count, i)=> SELECTABLE_ROLES[i])
+      .map((count, i) => ({
         count,
         roleId: i,
         role: ROLE_NAMES[i],
         selected: player.selected === i,
-        available: -ROLE_PRICES[i] >= economics
+        available: -ROLE_PRICES[i] >= economics && SELECTABLE_ROLES[i],
         // QUESTION: how to change player.selected
         // in case of unavailability?
         // Maybe move it back here and write one more selector.
