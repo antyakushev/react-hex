@@ -28,7 +28,7 @@
   color: #fff;
   cursor: pointer;
   filter: blur(3px);
-  transition: .2s;
+  transition: .7s;
 
   &:hover {
     filter: blur(.5px);
@@ -41,4 +41,9 @@
 
 .info {
   position: fixed;
+  font-size: 32px;
+}
+
+.player {
+  font-weight: bold;
 }

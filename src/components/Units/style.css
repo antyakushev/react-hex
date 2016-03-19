@@ -1,3 +1,11 @@
 .units {
-  
+  font-family: Georgia, sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-align: center;
+  vertical-align: middle;
+  color: #fff;
+  cursor: pointer;
+  width:600px;
 }

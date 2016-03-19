@@ -17,7 +17,7 @@ class Switcher extends Component {
 const mapStateToProps = (state, { roleId, role, count, selected, available, onUnitClick }) => (
   {
     onClick: onUnitClick.bind(this, roleId),
-    text: `${role} ${count}`,
+    text: `${role} : ${count}`,
     className: joinClasses(
       styles.unit,
       selected && styles.selected,

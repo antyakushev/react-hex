@@ -1,15 +1,30 @@
 .unit {
-  color: lightgray;
+  display: inline;
+  padding: 10px;
   list-style: none;
   cursor: pointer;
   pointer-events: none;
+  color: lightgrey;
+  background-color: darkgrey;
 }
 
-.selected {
-  font-weight: bold;
+.unit:first-child {
+  border-top-left-radius: 50% 45%;
+  border-bottom-left-radius: 50% 45%;
+}
+
+.unit:last-child {
+  border-top-right-radius: 50% 45%;
+  border-bottom-right-radius: 50% 45%;
 }
 
 .available {
-  color: black;
   pointer-events: auto;
+  color: darkgrey;
+  background-color: green;
+}
+
+.selected {
+  color: white;
+  font-weight: bold;
 }
