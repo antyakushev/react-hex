@@ -1,6 +1,13 @@
-import { createSelector } from 'reselect'
-import { ROLES, ROLE_PRICES, ROLE_NAMES, SELECTABLE_ROLES, ROLES_SUPPLY} from 'Consts'
 import _ from 'lodash'
+import { createSelector } from 'reselect'
+import {
+  ROLES,
+  ROLE_PRICES,
+  ROLE_NAMES,
+  SELECTABLE_ROLES,
+  ROLES_SUPPLY,
+  ROLE_STEPS,
+} from 'Consts'
 
 const cellsSelector = ({ cells }) => cells
 const playersSelector = ({ players }) => players
@@ -74,7 +81,7 @@ export const playerUnitsSelector = createSelector(
         roleId: i,
         role: ROLE_NAMES[i],
         selected: player.selected === i,
-        available: -ROLE_PRICES[i] >= economics,
+        available: -ROLE_PRICES[i] >= Math.min(economics, 0), // Negative price units are always available
         // QUESTION: how to change player.selected
         // in case of unavailability?
         // Maybe move it back here and write one more selector.
@@ -91,26 +98,49 @@ const findCellId = (cells, i, j) => {
   return _.find(cells, { i, j })
 }
 
-const cellNeighbours = (cells, c) => {
+const cellNeighbours = (cells, c, r = 1) => {
   const find = (i, j) => findCellId(cells, i, j)
+  const moreCells = r > 1 ? cellNeighbours(cells, c, r - 1) : []
   return [
-    find(c.i, c.j + 1),
-    find(c.i + 1, c.j),
-    find(c.i + 1, c.j - 1),
-    find(c.i, c.j - 1),
-    find(c.i - 1, c.j),
-    find(c.i - 1, c.j + 1),
+    ...moreCells,
+    find(c.i, c.j + r),
+    find(c.i + r, c.j),
+    find(c.i + r, c.j - r),
+    find(c.i, c.j - r),
+    find(c.i - r, c.j),
+    find(c.i - r, c.j + r),
   ]
 }
 
-const cellNeighbourIds = (cells, c) => (
-  cellNeighbours(cells, c).map(cell => cell && cell.cid)
+const cellNeighbourIds = (cells, c, r, player, onFoe, onVoid) => (
+  cellNeighbours(cells, c, r)
+  .filter(cell =>
+    cell && (
+      (onVoid && typeof cell.player !== 'number') || onFoe && (
+        typeof cell.player === 'number' && cell.player !== player
+      )
+    )
+  )
+  .map(cell => cell && cell.cid)
 )
 
 const selectedCellNeighbourIdsSelector = createSelector(
   cellsSelector,
   selectedCellSelector,
-  (cells, selectedCell) => (selectedCell ? cellNeighbourIds(cells, selectedCell) : null)
+  stepSelector,
+  playerSelector,
+  (cells, selectedCell, step, player) => (
+    selectedCell
+    ? cellNeighbourIds(
+      cells,
+      selectedCell,
+      ROLE_STEPS[selectedCell.role][step - 1].radius,
+      player,
+      ROLE_STEPS[selectedCell.role][step - 1].onFoe,
+      ROLE_STEPS[selectedCell.role][step - 1].onVoid,
+    )
+    : null
+  )
 )
 
 const playerSupplyCellsSelector = createSelector(
@@ -120,10 +150,12 @@ const playerSupplyCellsSelector = createSelector(
   }
 )
 
-const playerCellsIdsSelector = createSelector(
+const playerSelectableCellsIdsSelector = createSelector(
   playerCellsSelector,
   (cells) => {
-    return cells && cells.map(c => c.cid)
+    return cells && cells
+    .filter(c => SELECTABLE_ROLES[c.role])
+    .map(c => c.cid)
   }
 )
 
@@ -166,19 +198,21 @@ export const highlightedCellsSelector = createSelector(
   supplyChainIdsSetSelector,
   stepSelector,
   currentPlayerSelector,
-  playerCellsIdsSelector,
-  (cells, selectedCellNeighbourIds, supplyChainIdsSet, step, currentPlayer, playerCellsIds) => {
+  playerSelectableCellsIdsSelector,
+  (cells, selectedCellNeighbourIds, supplyChainIdsSet, step, currentPlayer, playerSelectableCellsIds) => {
     if (typeof currentPlayer.selected === 'number') {
+      // Player considers adding new unit
       return {
         cells: cells.map(cell => {
           return {
             ...cell,
-            highlighted: supplyChainIdsSet.has(cell.cid)
+            highlighted: supplyChainIdsSet.has(cell.cid) //|| _.includes(playerSelectableCellsIds, cell.cid)
           }
         })
       }
-    } else if (selectedCellNeighbourIds || playerCellsIds) {
-      const ids = step === 0 ? playerCellsIds : selectedCellNeighbourIds
+    } else if (selectedCellNeighbourIds || playerSelectableCellsIds) {
+      // Player selected existing unit
+      const ids = step === 0 ? playerSelectableCellsIds : selectedCellNeighbourIds
       return {
         cells: cells.map(cell => {
           if (_.includes(ids, cell.cid)) {

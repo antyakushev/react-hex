@@ -1,30 +1,23 @@
 .unit {
-  display: inline;
-  padding: 10px;
+  display: inline-block;
+  padding: 0 10px;
   list-style: none;
   cursor: pointer;
   pointer-events: none;
   color: lightgrey;
-  background-color: darkgrey;
-}
+  border-left: 2px solid #666;
 
-.unit:first-child {
-  border-top-left-radius: 50% 45%;
-  border-bottom-left-radius: 50% 45%;
-}
-
-.unit:last-child {
-  border-top-right-radius: 50% 45%;
-  border-bottom-right-radius: 50% 45%;
+  &:first-child {
+    border-left: none;
+  }
 }
 
 .available {
   pointer-events: auto;
-  color: darkgrey;
-  background-color: green;
+  color: #333;
+  background-color: #fff;
 }
 
 .selected {
-  color: white;
-  font-weight: bold;
+  background-color: orange;
 }

@@ -1,6 +1,13 @@
 // QUESTION: is it a good practice to access the store directly from the action creators?
 import store from '../store'
-import { selectedCellSelector, stepSelector, playerSelector, currentPlayerSelector, playerEconomics } from '../selectors'
+import {
+  selectedCellSelector,
+  stepSelector,
+  playerSelector,
+  currentPlayerSelector,
+  playerEconomics,
+} from '../selectors'
+import { ROLE_STEPS } from 'Consts'
 
 export const begin = (numberOfPlayers = 2) => (
   {
@@ -10,10 +17,25 @@ export const begin = (numberOfPlayers = 2) => (
 )
 
 export const selectNewUnit = (role) => {
+  const state = store.getState()
+  const selected = currentPlayerSelector(state).selected
+  const step = stepSelector(state)
+  const isSelected = step === 1 && typeof selected === 'number'
+  if (step === 0 || isSelected && selected !== role) {
+    return {
+      type: 'SELECT_NEW_UNIT',
+      role,
+      player: playerSelector(state),
+    }
+  }
+  if (isSelected && selected === role) {
+    return {
+      type: 'DESELECT_NEW_UNIT',
+      player: playerSelector(state),
+    }
+  }
   return {
-    type: 'SELECT_NEW_UNIT',
-    role,
-    player: playerSelector(store.getState()),
+    type: 'NOOP'
   }
 }
 
@@ -41,7 +63,7 @@ export const clickCell = ({ cid, role, player }) => {
   }
   if (step > 0) {
     return {
-      type: 'MOVE_UNIT',
+      type: ROLE_STEPS[selectedCell.role][step-1].move,
       cid,
       role: selectedCell.role,
       player: currentPlayer,
@@ -52,9 +74,9 @@ export const clickCell = ({ cid, role, player }) => {
 }
 
 // It's what the bishop does
-export const proselytize = (cell) => {
-  return {
-    type: 'PROSELYTIZE',
-    cell,
-  }
-}
+// export const proselytize = (cell) => {
+//   return {
+//     type: 'PROSELYTIZE',
+//     cell,
+//   }
+// }

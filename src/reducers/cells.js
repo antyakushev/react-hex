@@ -1,3 +1,5 @@
+import _ from 'lodash'
+import { isLastCombatStep } from 'Utils'
 import { ROLES } from 'Consts'
 
 const n = 5
@@ -94,16 +96,36 @@ const cell = (state, action) => {
         selected: state.cid === action.cid
       }
     case 'MOVE_UNIT':
+    case 'HORSE_JUMP':
       if (state.selected) return {
         ...state,
         role: null,
         player: null,
-        selected: false
+        selected: false,
       }
       if (state.cid === action.cid) return {
         ...state,
         role: action.role,
-        player: action.player
+        player: action.player,
+        selected: !isLastCombatStep(action.role, action.step),
+      }
+      if (action.type === 'HORSE_JUMP') {
+        if (state.cid === action.mid)
+        return {
+          ...state,
+          role: null,
+          player: null,
+        }
+      }
+      return state
+    case 'PROSELYTIZE':
+      if (state.selected) return {
+        ...state,
+        selected: false,
+      }
+      if (state.cid === action.cid) return {
+        ...state,
+        player: action.player,
       }
       return state
     default:
@@ -121,6 +143,17 @@ const cells = (state, action) => {
     case 'SELECT_NEW_UNIT':
     case 'PLACE_NEW_UNIT':
     case 'MOVE_UNIT':
+    case 'PROSELYTIZE':
+      return state.map(c =>
+        cell(c, action)
+      )
+    case 'HORSE_JUMP':
+      // VERY DIRTY. Will be solved and nice and natural when rewritten to MobX.
+      const from = _.find(state, { selected: true })
+      const to = _.find(state, { cid: action.cid })
+      const mid = _.find(state, { i: (from.i + to.i) / 2, j: (from.j + to.j) / 2 })
+      if (mid && mid.player !== action.player) // no mid found means cells are neighbours
+        action.mid = mid.cid
       return state.map(c =>
         cell(c, action)
       )

@@ -17,6 +17,7 @@ const player = (state, action) => {
       return {
         selected: action.role
       }
+    case 'DESELECT_NEW_UNIT':
     case 'SELECT_UNIT':
       return {
         selected: null
@@ -35,6 +36,7 @@ const player = (state, action) => {
 const players = (state, action) => {
   switch (action.type) {
     case 'SELECT_NEW_UNIT':
+    case 'DESELECT_NEW_UNIT':
     case 'SELECT_UNIT':
     case 'PLACE_NEW_UNIT':
       return state.map(

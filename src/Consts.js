@@ -40,24 +40,29 @@ export const ROLE_PRICES = {
 export const ROLE_STEPS = {
   0: [
     {
-      move: 'MOVE',
+      move: 'MOVE_UNIT',
       radius: 1,
+      onVoid: true,
     }
   ],
   1: [
     {
       move: 'HORSE_JUMP',
       radius: 2,
+      onVoid: true,
+      onFoe: true,
     }
   ],
   2: [
     {
-      move: 'MOVE',
+      move: 'MOVE_UNIT',
       radius: 1,
+      onVoid: true,
     },
     {
       move: 'PROSELYTIZE',
       radius: 1,
+      onFoe: true,
     }
   ],
 }
