@@ -8,6 +8,16 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var cssModuleName =  true ? //(env === 'development')
 '&localIdentName=[name]__[local]--[hash:base64:5]' : ''
 
+switch(process.env.npm_lifecycle_event) {
+  case 'build':
+  case 'stats':
+    publicPath = '/react-hex/'
+    break;
+  default:
+    publicPath = '/static/'
+    break;
+}
+
 module.exports = {
   devtool: 'eval',
   entry: [
@@ -18,7 +28,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/static/'
+    publicPath: publicPath
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
