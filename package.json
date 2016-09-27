@@ -1,34 +1,28 @@
 {
-  "name": "react-hot-boilerplate",
+  "name": "react-hex",
   "version": "1.0.0",
-  "description": "Boilerplate for ReactJS project with hot code reloading",
+  "description": "Game",
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack --config webpack.config.js --color -p",
-    "deploy": "gh-pages -d dist",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.prod.config.js --color -p",
+    "deploy": "gh-pages -d build",
     "start": "cross-env NODE_ENV=development node server",
     "lint": "eslint src"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gaearon/react-hot-boilerplate.git"
+    "url": "https://github.com/antyakushev/react-hex.git"
   },
   "keywords": [
     "react",
-    "reactjs",
-    "boilerplate",
-    "hot",
-    "reload",
-    "hmr",
-    "live",
-    "edit",
-    "webpack"
+    "hex",
+    "game"
   ],
-  "author": "Dan Abramov <dan.abramov@me.com> (http://github.com/gaearon)",
+  "author": "Anton Yakushev (http://github.com/antyakushev)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gaearon/react-hot-boilerplate/issues"
+    "url": "https://github.com/antyakushev/react-hex/issues"
   },
-  "homepage": "https://github.com/gaearon/react-hot-boilerplate",
+  "homepage": "https://github.com/antyakushev/react-hex",
   "devDependencies": {
     "babel-core": "^6.0.20",
     "babel-eslint": "^4.1.8",
@@ -42,24 +36,39 @@
     "eslint-plugin-react": "^4.1.0",
     "gh-pages": "^0.11.0",
     "react-hot-loader": "^1.3.0",
-    "webpack": "^1.12.2",
+    "webpack": "2.1.0-beta.22",
     "webpack-dev-server": "^1.12.1"
   },
   "dependencies": {
     "autoprefixer": "^6.3.3",
+    "babel-preset-react-hmre": "^1.1.1",
+    "cheerio": "^0.22.0",
     "cross-env": "^2.0.1",
     "css-loader": "^0.23.1",
-    "extract-text-webpack-plugin": "^1.0.1",
+    "exports-loader": "^0.6.3",
+    "extract-text-webpack-plugin": "^2.0.0-beta",
+    "file-loader": "^0.9.0",
+    "html-loader": "^0.4.4",
+    "html-webpack-plugin": "^2.22.0",
+    "image-webpack-loader": "^2.0.0",
+    "imports-loader": "^0.6.5",
+    "json-loader": "^0.5.4",
     "lodash": "^4.6.1",
+    "offline-plugin": "^3.4.2",
+    "path": "^0.12.7",
+    "postcss-cssnext": "^2.8.0",
+    "postcss-focus": "^1.0.0",
     "postcss-import": "^8.0.2",
     "postcss-loader": "^0.8.1",
     "postcss-nested": "^1.0.0",
+    "postcss-reporter": "^1.4.1",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-redux": "^4.4.0",
     "react-swipeable": "^3.1.0",
     "redux": "^3.3.1",
     "reselect": "^2.0.3",
-    "style-loader": "^0.13.0"
+    "style-loader": "^0.13.0",
+    "url-loader": "^0.5.7"
   }
 }
