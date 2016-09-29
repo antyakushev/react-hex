@@ -50,7 +50,7 @@ export const ROLE_STEPS = {
       move: 'HORSE_JUMP',
       radius: 2,
       onVoid: true,
-      onFoe: true,
+      onFoe: [0, 1, 2, 1000],
     }
   ],
   2: [
@@ -62,16 +62,19 @@ export const ROLE_STEPS = {
     {
       move: 'PROSELYTIZE',
       radius: 1,
-      onFoe: true,
+      onFoe: [0, 1, 2],
+      optional: true,
     }
   ],
 }
 
-export const ROLE_UNITS_PER_TURN = {
-  0: 2,
-  1: 1,
-  2: 1,
-}
+export const ROLE_DESCRIPTIONS = [
+  'Peasants supply food for your army',
+  'Knights can pass through your units and they can kill',
+  'Bishops can entice enemy units, but they have to move first'
+]
+
+export const ROLE_UNITS_PER_TURN = [2, 1, 1]
 
 export const ROLES_SUPPLY = [
   0,

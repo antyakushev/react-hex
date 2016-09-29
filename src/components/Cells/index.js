@@ -1,18 +1,23 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styles from './style.css'
-import { clickCell } from 'actions'
+import { clickCell, clickOutsideCell } from 'actions'
 import { highlightedCellsSelector } from 'selectors'
 import Cell from 'Cell'
 
-export default class Cells extends Component {
+class Cells extends Component {
   render() {
-    const { cells, onCellClick } = this.props
+    const { cells, onCellClick, onOutsideCellClick } = this.props
     return (
       <div className={styles.cells}>
         {
           cells.map((c, i) =>
-            <Cell key={i} {...c} onCellClick={onCellClick} />
+            <Cell
+              key={i}
+              {...c}
+              onCellClick={onCellClick}
+              onOutsideCellClick={onOutsideCellClick}
+            />
           )
         }
       </div>
@@ -22,9 +27,12 @@ export default class Cells extends Component {
 
 const mapDispatchToProps = (dispatch) => (
   {
-    onCellClick: (cell, role, player) => {
+    onCellClick: (cell, role, player) => (
       dispatch(clickCell(cell, role, player))
-    }
+    ),
+    onOutsideCellClick: (cell, role, player) => (
+      dispatch(clickOutsideCell(cell, role, player))
+    ),
   }
 )
 

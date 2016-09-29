@@ -36,9 +36,12 @@ const turn = (state, action) => {
       }
     case 'SELECT_UNIT':
       return setStep(state, 1)
+    case 'DESELECT_UNIT':
+      return setStep(state, 0)
     case 'MOVE_UNIT':
     case 'PROSELYTIZE':
     case 'HORSE_JUMP':
+    case 'SKIP_ACTION':
       // TODO: unsimplify this!
       if (isLastCombatStep(action.role, action.step)) {
         return nextTurn(state)

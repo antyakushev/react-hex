@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Swipeable from 'react-swipeable'
 import styles from './style.css'
+import { gameSelector } from 'selectors'
 import { begin } from 'actions'
 import Cells from 'Cells'
 import Units from 'Units'
@@ -20,7 +21,7 @@ const Game = class Game extends Component {
     this.setState({ rotation: this.state.rotation + delta / 60000 })
   }
   render() {
-    const { turn, onStartClick } = this.props
+    const { turn, winner, onStartClick } = this.props
     return (
       <div>
         <div className={joinClasses(styles.startScreen, turn.started && styles.hidden)}>
@@ -31,11 +32,18 @@ const Game = class Game extends Component {
 
         <Swipeable onSwiping={this.swiping}>
           <div className={styles.info}>
+            {
+              typeof winner === 'number' && (
+                <div>
+                  {`${PLAYER_COLORS[winner]} player won!`}
+                </div>
+              )
+            }
             <div style={{ color: PLAYER_COLORS[turn.player] }}>
-              {`Player ${turn.player}'s turn`}
+              {`${PLAYER_COLORS[turn.player]} player's turn`}
             </div>
             <div>
-              {turn.step && `Step ${turn.step}`}
+              {typeof turn.step === 'number' && `Step ${turn.step}`}
             </div>
             <Units />
           </div>
@@ -56,4 +64,4 @@ const mapDispatchToProps = (dispatch) => (
   }
 )
 
-export default connect((state, props) => ({ ...state, ...props }), mapDispatchToProps)(Game)
+export default connect(gameSelector, mapDispatchToProps)(Game)

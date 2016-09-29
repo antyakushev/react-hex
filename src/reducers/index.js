@@ -3,6 +3,6 @@ import turn from './turn'
 import players from './players'
 import cells from './cells'
 
-const game = combineReducers({turn, players, cells})
+const game = combineReducers({cells, turn, players})
 
 export default game

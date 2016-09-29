@@ -13,6 +13,13 @@ const cellsSelector = ({ cells }) => cells
 const playersSelector = ({ players }) => players
 const turnSelector = ({ turn }) => turn
 
+export const castlesSelector = createSelector(
+  cellsSelector,
+  (cells) => cells.filter(
+    cell => cell.role === 1000
+  )
+)
+
 export const playerSelector = createSelector(
   turnSelector,
   ({ player }) => player
@@ -117,7 +124,9 @@ const cellNeighbourIds = (cells, c, r, player, onFoe, onVoid) => (
   .filter(cell =>
     cell && (
       (onVoid && typeof cell.player !== 'number') || onFoe && (
-        typeof cell.player === 'number' && cell.player !== player
+        typeof cell.player === 'number' &&
+        cell.player !== player &&
+        !!~onFoe.indexOf(cell.role)
       )
     )
   )
@@ -227,4 +236,13 @@ export const highlightedCellsSelector = createSelector(
     }
     return { cells }
   }
+)
+
+export const gameSelector = createSelector(
+  turnSelector,
+  castlesSelector,
+  (turn, castles) => ({
+    turn,
+    winner: castles.length === 1 ? castles[0].player : null,
+  })
 )

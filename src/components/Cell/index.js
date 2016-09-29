@@ -1,26 +1,18 @@
 import React, { Component } from 'react'
 import styles from './style.css'
 import { connect } from 'react-redux'
+import onClickOutside from 'react-onclickoutside'
 import { joinClasses } from 'Utils'
 import { PLAYER_COLORS, ROLE_NAMES, ROLES } from 'Consts'
 
-export default class Cell extends Component {
-  render() {
-    const { onClick, className, style, role, cid } = this.props
-    return (
-      <div onClick={onClick} className={className} style={style}>
-        <span className={styles.role}>{role}</span>
-      </div>
-    )
-  }
-}
-
-// NOTE: maybe highlighted is not a part of the state?
 const mapStateToProps = (state, {
-  cid, x, y, player, role, selected, highlighted, onCellClick
+  cid, x, y, player, role, selected, highlighted, onCellClick, onOutsideCellClick
 }) => (
   {
-    onClick: highlighted && onCellClick.bind(this, {cid, role, player}), //|| (typeof role === 'number' && (role !== ROLES.CASTLE))
+    handleClick: highlighted && onCellClick.bind(this, {cid, role, player}),
+    handleClickOutside: onOutsideCellClick.bind(this, {cid, role, player}),
+    disableOnClickOutside: !selected,
+    outsideClickIgnoreClass: styles.hl,
     player,
     cid: cid,
     role: ROLE_NAMES[role],
@@ -37,4 +29,17 @@ const mapStateToProps = (state, {
   }
 )
 
-export default connect(mapStateToProps)(Cell)
+@connect(mapStateToProps)
+@onClickOutside
+class Cell extends Component {
+  render() {
+    const { handleClick, className, style, role, cid } = this.props
+    return (
+      <div onClick={handleClick} className={className} style={style}>
+        <span className={styles.role}>{role}</span>
+      </div>
+    )
+  }
+}
+
+export default Cell

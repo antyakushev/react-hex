@@ -86,6 +86,7 @@ const cell = (state, action) => {
         player: action.player
       }
     case 'SELECT_NEW_UNIT':
+    case 'DESELECT_UNIT':
       return {
         ...state,
         selected: false
@@ -121,13 +122,18 @@ const cell = (state, action) => {
     case 'PROSELYTIZE':
       if (state.selected) return {
         ...state,
-        selected: false,
+        selected: !isLastCombatStep(action.role, action.step),
       }
       if (state.cid === action.cid) return {
         ...state,
         player: action.player,
       }
       return state
+    case 'SKIP_ACTION':
+      if (state.selected) return {
+        ...state,
+        selected: !isLastCombatStep(action.role, action.step),
+      }
     default:
       return state
   }
@@ -140,9 +146,11 @@ const cells = (state, action) => {
   switch (action.type) {
     case 'BEGIN':
     case 'SELECT_UNIT':
+    case 'DESELECT_UNIT':
     case 'SELECT_NEW_UNIT':
     case 'PLACE_NEW_UNIT':
     case 'MOVE_UNIT':
+    case 'SKIP_ACTION':
     case 'PROSELYTIZE':
       return state.map(c =>
         cell(c, action)

@@ -70,13 +70,32 @@ export const clickCell = ({ cid, role, player }) => {
       step
     }
   }
-  // TODO: MOVE_UNIT and PROSELYTIZE
 }
 
-// It's what the bishop does
-// export const proselytize = (cell) => {
-//   return {
-//     type: 'PROSELYTIZE',
-//     cell,
-//   }
-// }
+export const clickOutsideCell = ({ cid, role, player }) => {
+  const state = store.getState()
+  const step = stepSelector(state)
+  const currentPlayer = playerSelector(state)
+  if (step === 1) {
+    return {
+      type: 'DESELECT_UNIT',
+      role,
+      cid,
+      player: currentPlayer,
+      step,
+    }
+  }
+  const selectedCell = selectedCellSelector(state)
+  if (ROLE_STEPS[selectedCell.role][step-1].optional) {
+    return {
+      type: 'SKIP_ACTION',
+      role: selectedCell.role,
+      cid,
+      player: currentPlayer,
+      step,
+    }
+  }
+  return {
+    type: 'NOOP'
+  }
+}
