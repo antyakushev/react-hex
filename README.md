@@ -1,9 +1,7 @@
-react-hot-boilerplate
+React Hex Game
 =====================
 
-The minimal dev environment to enable live-editing React components.
-
-### Usage
+### Development
 
 ```
 npm install
@@ -12,36 +10,60 @@ open http://localhost:3000
 ```
 
 Now edit `src/App.js`.  
-Your changes will appear without reloading the browser like in [this video](http://vimeo.com/100010922).
 
-### Linting
+### Play
+http://antyakushev.github.io/react-hex/
 
-This boilerplate project includes React-friendly ESLint configuration.
+### Rules by Ilya Kamenskikh (russian)
 
-```
-npm run lint
-```
+***Вступление***
 
-### Using `0.0.0.0` as Host
+Смежные Земли это игра про двух лордов живущих в своих замках которые не могут поделить кусок земли между собой и поэтому отправляют в бой своих воинов,
+захватывают землю крестьянами и сманивают священниками на свою сторону людей оппонента. Цель каждого лорда уничтожить замок противника, для чего необходимо
+довести туда своего воина.
 
-You may want to change the host in `server.js` and `webpack.config.js` from `localhost` to `0.0.0.0` to allow access from same WiFi network. This is not enabled by default because it is reported to cause problems on Windows. This may also be useful if you're using a VM.
+***Общий порядок игры и цель***
 
-### Missing Features
+Игроки ходят по очереди. В свой ход игрок может или добавить новую фигуру на поле или сходить той фигурой что уже есть на поле.
+Цель игры - довести своего воина до крепости противника, "встав" на клетку с крепостью. За одну партию игроки должны сделать одинаковое количество ходов,
+это значит, что если крепость 2го игрока уничтожили он может совершить еще один ход. Таким образом возможна ничья, в случае, если оба игрока в последний 
+ход уничтожают крепости друг друга.
 
-This boilerplate is purposefully simple to show the minimal configuration for React Hot Loader. For a real project, you'll want to add a separate config for production with hot reloading disabled and minification enabled. You'll also want to add a router, styles and maybe combine dev server with an existing server. This is out of scope of this boilerplate, but you may want to look into [other starter kits](https://github.com/gaearon/react-hot-loader/blob/master/docs/README.md#starter-kits).
+***Фигуры вводятся по следующим правилам:***
 
-### Dependencies
+Новые фигуры можно добавлять только в соседние клетки с цепочкой своих фигур, если в ней есть хотя бы один крестьянин т.е.
+- нельзя добавлять новые фигуры от отдельно стоящего священника / воина.
+- можно добавлять фигуры от священника или воина, если в цепочке с ними есть хотя бы один крестьянин. 
+Если игрок решил ввести новых крестьян, то он имеет право добавить сразу два крестьянина. Воин или священник добавляется по одному. 
+После добавления фигуры на поле ход игрока заканчивается. т.е.
+- нельзя добавить священника и сразу обратить им фигуру противника
+- нельзя добавить одного крестьянина и одного воина (только двух крестьян)
+- начиная со второго хода можно ставить крестьян в свой ход одного за другим, т.е. цепочкой
 
-* React
-* Webpack
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
-* [babel-loader](https://github.com/babel/babel-loader)
-* [react-hot-loader](https://github.com/gaearon/react-hot-loader)
+***Фигуры выполняют слеющие цели:***
 
-### Resources
+Крестьянин - мирный землепашец который вынужден батрачить на своего лорда и кормить воинов и священников. Крестьянин не может атаковать,
+ходит на одну клетку в любую сторону и для его добавления на поле нет особых требований, кроме места расположения (описано выше).
 
-* [Demo video](http://vimeo.com/100010922)
-* [react-hot-loader on Github](https://github.com/gaearon/react-hot-loader)
-* [Integrating JSX live reload into your workflow](http://gaearon.github.io/react-hot-loader/getstarted/)
-* [Troubleshooting guide](https://github.com/gaearon/react-hot-loader/blob/master/docs/Troubleshooting.md)
-* Ping dan_abramov on Twitter or #reactjs IRC
+Воин - основная боевая единица. Чтобы прокормить воина вам потребуется два крестьянина на поле. 
+Убивает все недружественные фигуры через которые проходит в свой ход. Слишком глуп чтобы поворачивать. т.е.
+- ходит на 1 или на 2 клетки в любую сторону, при этом не может ходить 'конем'
+- крестьяне кормящие воина считаются занятыми и не могут кормить кого либо еще
+- нельзя добавить воина на поле, если у вас 0 или 1 свободный крестьянин
+- перепрыгивает через дружественные фигуры в случае когда ходит на 2 клетки
+- не может перепрыгивать через вражеские фигуры, все вражеские фигуры через которые прошел воин в свой ход считаются убитыми и убираются с поля
+
+Священник - хитрый и умный, он не привык орудовать мечом, зато воин или крестьянин противника заслушавшийся его речей встанет на вашу сторону.
+Чтобы прокормить священника вам потребуется три крестьянина.
+- ходит на 1 клетку в любую сторону и в этот же ход обращает 1 фигуру противника из соседней клетки в дружественную фигуру 
+- не может обратить за 1 ход более 1 фигуры протвиника
+- не может обращать священников противника
+- не может обращать не сходив, т.е. окруженный священник не может ни ходить, ни обращать фигуры рядом с ним
+- нельзя добавить священника на поле, если у вас 0, 1 или 2 свободных крестьянина
+
+***Дополнительные правила:***
+В первый ход игроки могут использовать для создания крестьян только клетки прилегающие к крепости
+Крепость нельзя передвигать
+Крепость нельзя уничтожить крестьянином или священником
+
+
